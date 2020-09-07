@@ -14,9 +14,82 @@
  *
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-int main() {
-	// printf() displays the string inside quotation
-	printf("enum");
+enum Status
+{
+	CONTINUE,
+	WOW,
+	LOST
+};
+
+int roolDice(void);
+
+int main()
+{
+	srand(time(NULL)); // Setup random
+
+	int myPoint;
+	enum Status gameStatus;
+	int sum = roolDice();
+
+	switch (sum)
+	{
+	case 7:
+	case 11:
+		gameStatus = WOW;
+		break;
+
+	case 2:
+	case 3:
+	case 12:
+		gameStatus = LOST;
+		break;
+
+	default:
+		gameStatus = CONTINUE;
+		myPoint = sum;
+		printf("Point is %d\n", myPoint);
+		break;
+	}
+
+	while (CONTINUE == gameStatus)
+	{
+		sum = roolDice();
+
+		if (sum == myPoint)
+		{
+			gameStatus = WOW;
+		}
+		else
+		{
+			if (7 == sum)
+			{
+				gameStatus = LOST;
+			}
+		}
+	}
+
+	if (WOW == gameStatus)
+	{
+		puts("Player wins!\n");
+	}
+
+	if (LOST == gameStatus)
+	{
+		puts("Player losts!\n");
+	}
+
 	return 0;
+}
+
+int roolDice(void)
+{
+	int die1 = 1 + (rand() % 6);
+	int die2 = 1 + (rand() % 6);
+
+	printf ("Dice are %d %d\n", die1, die2);
+
+	return die1 + die2;
 }
